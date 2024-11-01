@@ -6,11 +6,13 @@ import models.bookstore.request.GenerateTokenRequestModel;
 import models.bookstore.response.GenerateTokenResponseModel;
 import models.bookstore.request.LoginRequestModel;
 import models.bookstore.response.LoginResponseModel;
+import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.Cookie;
+
+import config.Config;
 
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
-import static data.Credentials.*;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,11 +20,13 @@ import static specs.BookStoreSpec.*;
 
 public class BookStoreAuthorizationApi {
 
+    private static final Config config = ConfigFactory.create(Config.class);
+
     @Step("Сгенерировать токен")
     public static void generateToken() {
         GenerateTokenRequestModel bodyData = new GenerateTokenRequestModel();
-        bodyData.setUserName(login);
-        bodyData.setPassword(password);
+        bodyData.setUserName(config.login());
+        bodyData.setPassword(config.password());
 
         GenerateTokenResponseModel response = step("Отправить запрос", () ->
                 given(bookStoreRequestSpec)
@@ -45,8 +49,8 @@ public class BookStoreAuthorizationApi {
         generateToken();
 
         LoginRequestModel bodyData = new LoginRequestModel();
-        bodyData.setUserName(login);
-        bodyData.setPassword(password);
+        bodyData.setUserName(config.login());
+        bodyData.setPassword(config.password());
 
         return given(bookStoreRequestSpec)
                 .body(bodyData)

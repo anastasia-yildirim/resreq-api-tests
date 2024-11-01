@@ -1,12 +1,16 @@
 package tests;
 
-import com.codeborne.selenide.Configuration;
-import models.Session;
 import helpers.LoginExtension;
 import helpers.WithLogin;
-import io.restassured.RestAssured;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Story;
+import models.Session;
 import models.bookstore.BookModel;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import steps.api.BookStoreApiSteps;
 import steps.ui.BookStoreUiSteps;
 
@@ -15,29 +19,20 @@ import java.util.List;
 
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Selenide.$;
-import static helpers.LoginExtension.clearSession;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("bookstore")
+@Epic("")
+@Story("")
+@Feature("")
 public class BookStoreTests extends TestBase {
 
     BookStoreApiSteps bookStoreApiSteps = new BookStoreApiSteps();
     BookStoreUiSteps bookStoreUiSteps = new BookStoreUiSteps();
 
-    @BeforeAll
-    static void prepare() {
-        Configuration.baseUrl = System.getProperty("baseUrl", "https://demoqa.com");
-        RestAssured.baseURI = "https://demoqa.com";
-        Configuration.remote = System.getProperty("remote", "https://user1:1234@selenoid.autotests.cloud/wd/hub");
-    }
-
-    @AfterEach
-    void clearData() {
-        clearSession();
-    }
-
     @WithLogin
     @DisplayName("Удаление книги из профиля")
+    @Owner("@anastasiayildirim")
     @Test
     void deleteBookFromProfileTest() {
         //Arrange
