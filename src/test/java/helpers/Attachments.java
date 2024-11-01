@@ -1,6 +1,8 @@
 package helpers;
 
 import com.codeborne.selenide.Selenide;
+import config.Config;
+import config.TestEnvironmentConfigurator;
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -9,12 +11,14 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.sessionId;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.openqa.selenium.logging.LogType.BROWSER;
 
 public class Attachments {
+
     @Attachment(value = "{attachName}", type = "image/png")
     public static byte[] screenshotAs(String attachName) {
         return ((TakesScreenshot) getWebDriver()).getScreenshotAs(OutputType.BYTES);
@@ -59,9 +63,11 @@ public class Attachments {
     }
 
     public static void generateDataForAllureReport() {
+        Config config = TestEnvironmentConfigurator.getConfig();
+
         screenshotAs("Last screenshot");
         pageSource();
-        browserConsoleLogs();
+        if (Objects.equals(config.browserName(), "chrome")) { browserConsoleLogs(); }
         addVideo();
     }
 }

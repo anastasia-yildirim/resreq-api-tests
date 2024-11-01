@@ -2,6 +2,7 @@ package config;
 
 import com.codeborne.selenide.Configuration;
 import io.restassured.RestAssured;
+import lombok.Getter;
 import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -9,10 +10,12 @@ import java.util.Map;
 
 public class TestEnvironmentConfigurator {
 
-    public final Config config;
+    //public final Config config;
+    @Getter
+    private static final Config config = ConfigFactory.create(Config.class, System.getProperties());
 
     public TestEnvironmentConfigurator() {
-        this.config = ConfigFactory.create(Config.class, System.getProperties());
+        //this.config = ConfigFactory.create(Config.class, System.getProperties());
         createWebDriver();
     }
 
