@@ -40,6 +40,9 @@ public interface Config extends org.aeonbits.owner.Config {
     @Key("selenoidPassword")
     String selenoidPassword();
 
+    @Key("selenoidHost")
+    String selenoidHost();
+
     @Key("remoteUrl")
     String getRemoteUrl();
 }
