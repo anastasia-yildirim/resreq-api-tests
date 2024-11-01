@@ -50,8 +50,9 @@ dependencies {
     )
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     useJUnitPlatform()
+    systemProperties(System.getProperties())
 
     testLogging {
         lifecycle {
@@ -61,14 +62,14 @@ tasks.withType(Test) {
     }
 }
 
-task reqres_tests(type: Test) {
+tasks.register('reqres_tests', Test) {
     useJUnitPlatform {
-        includeTags("reqres")
+        includeTags 'reqres'
     }
 }
 
-task bookstore_tests(type: Test) {
+tasks.register('bookstore_tests', Test) {
     useJUnitPlatform {
-        includeTags("bookstore")
+        includeTags 'bookstore'
     }
 }

@@ -57,4 +57,11 @@ public class Attachments {
     public static String getSessionId(){
         return ((RemoteWebDriver) getWebDriver()).getSessionId().toString();
     }
+
+    public static void generateDataForAllureReport() {
+        screenshotAs("Last screenshot");
+        pageSource();
+        browserConsoleLogs();
+        addVideo();
+    }
 }
