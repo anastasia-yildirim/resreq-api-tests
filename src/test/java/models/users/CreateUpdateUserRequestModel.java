@@ -1,4 +1,4 @@
-package models.reqres.register.user;
+package models.users;
 
 import lombok.Data;
 
