@@ -13,7 +13,6 @@ import config.Config;
 
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
-import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.BookStoreSpec.*;
@@ -28,19 +27,17 @@ public class BookStoreAuthorizationApi {
         bodyData.setUserName(config.login());
         bodyData.setPassword(config.password());
 
-        GenerateTokenResponseModel response = step("Отправить запрос", () ->
+        GenerateTokenResponseModel response =
                 given(bookStoreRequestSpec)
                         .body(bodyData)
                         .when()
                         .post("/Account/v1/GenerateToken")
                         .then()
                         .spec(bookStoreResponseSpec200)
-                        .extract().as(GenerateTokenResponseModel.class));
+                        .extract().as(GenerateTokenResponseModel.class);
 
-        step("Проверить ответ", () -> {
             assertEquals("Success", response.getStatus());
             assertEquals("User authorized successfully.", response.getResult());
-        });
     }
 
     @Step("Залогиниться")
