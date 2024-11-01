@@ -2,6 +2,7 @@ package config;
 
 @Config.LoadPolicy(Config.LoadType.MERGE)
 @org.aeonbits.owner.Config.Sources({
+        "system:properties",
         "classpath:base.properties",
         "classpath:auth.properties",
         "classpath:remote.properties"
