@@ -1,4 +1,4 @@
-package models.reqres.register;
+package models.register;
 
 import lombok.Data;
 

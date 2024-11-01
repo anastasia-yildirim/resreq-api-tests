@@ -3,47 +3,13 @@ package config;
 @Config.LoadPolicy(Config.LoadType.MERGE)
 @org.aeonbits.owner.Config.Sources({
         "system:properties",
-        "classpath:base.properties",
-        "classpath:auth.properties",
-        "classpath:remote.properties"
+        "classpath:api-config.properties"
 })
 public interface Config extends org.aeonbits.owner.Config {
 
-    @Key("baseUrl")
-    @DefaultValue("https://demoqa.com")
-    String getBaseUrl();
+    @Key("baseURI")
+    String baseURI();
 
-    @Key("login")
-    String login();
-
-    @Key("password")
-    String password();
-
-    @Key("browser")
-    @DefaultValue("chrome")
-    String browserName();
-
-    @Key("browserVersion")
-    @DefaultValue("latest")
-    String browserVersion();
-
-    @Key("browserSize")
-    @DefaultValue("1280x1024")
-    String browserSize();
-
-    @Key("isRemote")
-    @DefaultValue("false")
-    Boolean isRemote();
-
-    @Key("selenoidUser")
-    String selenoidUser();
-
-    @Key("selenoidPassword")
-    String selenoidPassword();
-
-    @Key("selenoidHost")
-    String selenoidHost();
-
-    @Key("remoteUrl")
-    String getRemoteUrl();
+    @Key("basePath")
+    String basePath();
 }
