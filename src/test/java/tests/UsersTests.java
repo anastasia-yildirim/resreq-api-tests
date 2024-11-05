@@ -3,15 +3,17 @@ package tests;
 import io.restassured.RestAssured;
 import models.users.CreateUpdateUserRequestModel;
 import models.users.CreateUpdateUserResponseModel;
+import models.users.GetUserResponseModel;
+import models.users.GetUsersListResponseModel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static specs.DefaultReqresSpec.defaultRequestSpec;
 import static specs.DefaultReqresSpec.defaultResponseSpec;
 
@@ -69,7 +71,32 @@ public class UsersTests extends TestBase {
         });
     }
 
-    @DisplayName("Пользователь не найден")
+    @DisplayName("Успешное получение данных пользователя")
+    @Test
+    void successfullyGetUserDataTest() {
+
+        String expectedEmail = "janet.weaver@reqres.in", expectedFirstName = "Janet",
+                expectedLastName = "Weaver";
+
+        GetUserResponseModel response = step("Make request", () ->
+                given(defaultRequestSpec)
+                        .when()
+                        .get("/users/2")
+                        .then()
+                        .spec(defaultResponseSpec)
+                        .statusCode(200)
+                        .extract().as(GetUserResponseModel.class));
+
+        step("Check response", () -> {
+            assertNotNull(response.getUserData(), "Data should not be null");
+            assertNotNull(response.getSupport(), "Support should not be null");
+            assertEquals(expectedEmail, response.getUserData().getEmail());
+            assertEquals(expectedFirstName, response.getUserData().getFirstName());
+            assertEquals(expectedLastName, response.getUserData().getLastName());
+        });
+    }
+
+    @DisplayName("Неуспешное получение данных пользователя - пользователь не найден")
     @Test
     void userNotFoundTest() {
         step("Make request and check 404 is returned", () ->
@@ -81,7 +108,38 @@ public class UsersTests extends TestBase {
                         .statusCode(404));
     }
 
-    //TODO: delete user
-    //TODO: successful get single user
-    //TODO: successful get list of users
+    @DisplayName("Успешное удаление пользователя")
+    @Test
+    void successfulDeleteUserTest() {
+        step("Make request and check 204 is returned", () ->
+                given(defaultRequestSpec)
+                        .when()
+                        .delete("/users/2")
+                        .then()
+                        .spec(defaultResponseSpec)
+                        .statusCode(204));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2})
+    @DisplayName("Успешное получение списка пользователей")
+    void successfullyGetUsersListTest(int page) {
+
+        GetUsersListResponseModel response = step("Make request", () ->
+                given(defaultRequestSpec)
+                        .when()
+                        .get("/users?page=" + page)
+                        .then()
+                        .spec(defaultResponseSpec)
+                        .statusCode(200)
+                        .extract().as(GetUsersListResponseModel.class));
+
+        step("Check response", () -> {
+            assertNotNull(response.getSupport(), "Support should not be null");
+            assertEquals(6, response.getUserData().size());
+            assertEquals(page, response.getPage());
+            assertNotNull(response.getUserData().get(0).getEmail(), "Email should not be null");
+            assertNotNull(response.getUserData().get(1).getFirstName(), "First name should not be null");
+        });
+    }
 }
