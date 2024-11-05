@@ -42,25 +42,17 @@ ____
 
 ____
 <a id="jenkins"></a>
-## <img alt="Jenkins" height="25" src="images/logo/Jenkins.svg" width="25"/></a><a name="Сборка"></a>Сборка в [Jenkins](https://jenkins.autotests.cloud/job/029-anastasia-yildirim-qa_guru_java-bookstore-ui-tests/)</a>
+## <img alt="Jenkins" height="25" src="images/logo/Jenkins.svg" width="25"/></a><a name="Сборка"></a>Сборка в [Jenkins](https://jenkins.autotests.cloud/job/029-anastasia-yildirim-qa_guru_java-reqres_api_tests/)</a>
 ____
 <p align="center">  
-<a href="https://jenkins.autotests.cloud/job/029-anastasia-yildirim-qa_guru_java-bookstore-ui-tests/"><img src="images/screen/jenkins_build.png" alt="Jenkins" width="950"/></a>  
+<a href="https://jenkins.autotests.cloud/job/029-anastasia-yildirim-qa_guru_java-reqres_api_tests/"><img src="images/screen/jenkins_build.png" alt="Jenkins" width="950"/></a>  
 </p>
 
 
 ### **Параметры сборки в Jenkins:**
 
-- *baseUrl (адрес тестируемого веб-сайта)*
-- *login (логин тестового пользователя)*
-- *password (пароль тестового пользователя)*
-  
-- *browser (браузер, по умолчанию chrome)*
-- *browserVersion (версия браузера, по умолчанию 122.0)*
-- *browserSize (размер окна браузера, по умолчанию 1920x1080)*
-
-- *isRemote (настройка для удаленного запуска)*
-- *selenoidUser, DselenoidPassword и selenoidHost (логин, пароль и хост удаленного сервера Selenoid)*
+- *baseURI (адрес тестируемого веб-сайта)*
+- *basePath ()*
 
 <a id="console"></a>
 ## Команды для запуска из терминала
@@ -68,28 +60,19 @@ ___
 ***Локальный запуск:***
 
 ```bash  
-gradle clean test -Dlogin=ЛОГИН -Dpassword=ПАРОЛЬ
+gradle clean test
 ```
-Чтобы получить ЛОГИН и ПАРОЛЬ, создайте тестового пользователя на https://demoqa.com/register
 
 
 ***Удалённый запуск через Jenkins:***
 ```bash  
 clean test
-"-DbaseUrl=${baseUrl}"
-"-Dlogin=${login}"
-"-Dpassword=${password}"
-"-Dbrowser=${browser}"
-"-DbrowserVersion=${browserVersion}"
-"-DbrowserSize=${browserSize}"
-"-DisRemote=true"
-"-DselenoidUser="
-"-DselenoidPassword="
-"-DselenoidHost="
+"-DbaseURI=${baseURI}"
+"-DbasePath=${basePath}"
 ```
 ___
 <a id="allure"></a>
-## <img alt="Allure" height="25" src="images/logo/Allure.svg" width="25"/></a> <a name="Allure"></a>Allure [отчет](https://jenkins.autotests.cloud/job/029-anastasia-yildirim-qa_guru_java-bookstore-ui-tests/allure/)</a>
+## <img alt="Allure" height="25" src="images/logo/Allure.svg" width="25"/></a> <a name="Allure"></a>Allure [отчет](https://jenkins.autotests.cloud/job/029-anastasia-yildirim-qa_guru_java-reqres_api_tests/7/allure)</a>
 ___
 
 ### *Основная страница отчёта*
