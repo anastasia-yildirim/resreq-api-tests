@@ -1,11 +1,9 @@
 package tests;
 
-import io.restassured.RestAssured;
 import models.users.CreateUpdateUserRequestModel;
 import models.users.CreateUpdateUserResponseModel;
 import models.users.GetUserResponseModel;
 import models.users.GetUsersListResponseModel;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,16 +12,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static specs.DefaultReqresSpec.defaultRequestSpec;
-import static specs.DefaultReqresSpec.defaultResponseSpec;
+import static specs.ReqresSpec.*;
 
 public class UsersTests extends TestBase {
-
-    @BeforeAll
-    static void prepare() {
-        RestAssured.baseURI = "https://reqres.in";
-        RestAssured.basePath = "/api";
-    }
 
     @DisplayName("Успешное создание пользователя")
     @Test
@@ -38,8 +29,7 @@ public class UsersTests extends TestBase {
                         .when()
                         .post("/users")
                         .then()
-                        .spec(defaultResponseSpec)
-                        .statusCode(201)
+                        .spec(responseSpec201)
                         .extract().as(CreateUpdateUserResponseModel.class));
 
         step("Check response", () -> {
@@ -61,8 +51,7 @@ public class UsersTests extends TestBase {
                         .when()
                         .put("/users/2")
                         .then()
-                        .spec(defaultResponseSpec)
-                        .statusCode(200)
+                        .spec(responseSpec200)
                         .extract().as(CreateUpdateUserResponseModel.class));
 
         step("Check response", () -> {
@@ -73,7 +62,7 @@ public class UsersTests extends TestBase {
 
     @DisplayName("Успешное получение данных пользователя")
     @Test
-    void successfullyGetUserDataTest() {
+    void successfulGetUserDataTest() {
 
         String expectedEmail = "janet.weaver@reqres.in", expectedFirstName = "Janet",
                 expectedLastName = "Weaver";
@@ -83,8 +72,7 @@ public class UsersTests extends TestBase {
                         .when()
                         .get("/users/2")
                         .then()
-                        .spec(defaultResponseSpec)
-                        .statusCode(200)
+                        .spec(responseSpec200)
                         .extract().as(GetUserResponseModel.class));
 
         step("Check response", () -> {
@@ -104,8 +92,7 @@ public class UsersTests extends TestBase {
                         .when()
                         .get("/users/23")
                         .then()
-                        .spec(defaultResponseSpec)
-                        .statusCode(404));
+                        .spec(responseSpec404));
     }
 
     @DisplayName("Успешное удаление пользователя")
@@ -116,22 +103,21 @@ public class UsersTests extends TestBase {
                         .when()
                         .delete("/users/2")
                         .then()
-                        .spec(defaultResponseSpec)
+                        .spec(responseSpec204)
                         .statusCode(204));
     }
 
     @ParameterizedTest
     @ValueSource(ints = {1, 2})
     @DisplayName("Успешное получение списка пользователей")
-    void successfullyGetUsersListTest(int page) {
+    void successfulGetUsersListTest(int page) {
 
         GetUsersListResponseModel response = step("Make request", () ->
                 given(defaultRequestSpec)
                         .when()
                         .get("/users?page=" + page)
                         .then()
-                        .spec(defaultResponseSpec)
-                        .statusCode(200)
+                        .spec(responseSpec200)
                         .extract().as(GetUsersListResponseModel.class));
 
         step("Check response", () -> {

@@ -12,8 +12,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static specs.DefaultReqresSpec.defaultRequestSpec;
-import static specs.DefaultReqresSpec.defaultResponseSpec;
+import static specs.ReqresSpec.defaultRequestSpec;
+import static specs.ReqresSpec.responseSpec200;
+import static specs.ReqresSpec.responseSpec400;
 
 public class RegistrationTests extends TestBase {
 
@@ -30,8 +31,7 @@ public class RegistrationTests extends TestBase {
                 .when()
                     .post("/register")
                 .then()
-                    .spec(defaultResponseSpec)
-                    .statusCode(200)
+                    .spec(responseSpec200)
                     .extract().as(RegisterResponseModel.class));
 
         step("Check response", ()-> {
@@ -57,8 +57,7 @@ public class RegistrationTests extends TestBase {
                 .when()
                     .post("/register")
                 .then()
-                    .spec(defaultResponseSpec)
-                    .statusCode(400)
+                    .spec(responseSpec400)
                     .extract().as(UnsuccessfulRegisterResponseModel.class));
 
         step("Check response", ()-> assertEquals(expectedErrorText, response.getError()));
@@ -80,8 +79,7 @@ public class RegistrationTests extends TestBase {
                     .post("/register")
 
                 .then()
-                    .spec(defaultResponseSpec)
-                    .statusCode(400)
+                    .spec(responseSpec400)
                     .extract().as(UnsuccessfulRegisterResponseModel.class));
 
         step("Check response", ()-> assertEquals(expectedErrorText, response.getError()));
