@@ -10,8 +10,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static specs.ReqresSpec.*;
 
 public class UsersTests extends TestBase {
@@ -28,7 +29,8 @@ public class UsersTests extends TestBase {
                         .when()
                         .post("/users")
                         .then()
-                        .spec(responseSpec201)
+                        .spec(defaultResponseSpec)
+                        .statusCode(201)
                         .extract().as(CreateUpdateUserResponseModel.class));
 
         step("Check response", () -> {
@@ -90,7 +92,8 @@ public class UsersTests extends TestBase {
                         .when()
                         .get("/users/23")
                         .then()
-                        .spec(responseSpec404));
+                        .spec(defaultResponseSpec)
+                        .statusCode(404));
     }
 
     @DisplayName("Успешное удаление пользователя")
@@ -101,7 +104,7 @@ public class UsersTests extends TestBase {
                         .when()
                         .delete("/users/2")
                         .then()
-                        .spec(responseSpec204)
+                        .spec(defaultResponseSpec)
                         .statusCode(204));
     }
 

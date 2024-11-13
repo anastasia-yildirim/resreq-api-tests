@@ -7,14 +7,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.matchesPattern;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static specs.ReqresSpec.defaultRequestSpec;
-import static specs.ReqresSpec.responseSpec200;
-import static specs.ReqresSpec.responseSpec400;
+import static specs.ReqresSpec.*;
 
 public class RegistrationTests extends TestBase {
 
@@ -23,19 +22,19 @@ public class RegistrationTests extends TestBase {
     void successfulRegisterTest() {
         RegisterRequestModel bodyData = new RegisterRequestModel("eve.holt@reqres.in", "pistol");
 
-        RegisterResponseModel response = step("Make request", ()->
+        RegisterResponseModel response = step("Make request", () ->
                 given(defaultRequestSpec)
-                    .body(bodyData)
-                .when()
-                    .post("/register")
-                .then()
-                    .spec(responseSpec200)
-                    .extract().as(RegisterResponseModel.class));
+                        .body(bodyData)
+                        .when()
+                        .post("/register")
+                        .then()
+                        .spec(responseSpec200)
+                        .extract().as(RegisterResponseModel.class));
 
-        step("Check response", ()-> {
-        assertNotEquals(null, response.getId());
-        assertThat(response.getToken().length(), greaterThan(10));
-        assertThat(response.getToken(), matchesPattern("^[a-zA-Z0-9]+$"));
+        step("Check response", () -> {
+            assertNotEquals(null, response.getId());
+            assertThat(response.getToken().length(), greaterThan(10));
+            assertThat(response.getToken(), matchesPattern("^[a-zA-Z0-9]+$"));
         });
     }
 
@@ -46,16 +45,16 @@ public class RegistrationTests extends TestBase {
 
         String expectedErrorText = "Note: Only defined users succeed registration";
 
-        UnsuccessfulRegisterResponseModel response = step("Make request", ()->
+        UnsuccessfulRegisterResponseModel response = step("Make request", () ->
                 given(defaultRequestSpec)
-                    .body(bodyData)
-                .when()
-                    .post("/register")
-                .then()
-                    .spec(responseSpec400)
-                    .extract().as(UnsuccessfulRegisterResponseModel.class));
+                        .body(bodyData)
+                        .when()
+                        .post("/register")
+                        .then()
+                        .spec(responseSpec400)
+                        .extract().as(UnsuccessfulRegisterResponseModel.class));
 
-        step("Check response", ()-> assertEquals(expectedErrorText, response.getError()));
+        step("Check response", () -> assertEquals(expectedErrorText, response.getError()));
     }
 
     @DisplayName("Неуспешная регистрация - отсутствует пароль")
@@ -65,16 +64,16 @@ public class RegistrationTests extends TestBase {
 
         String expectedErrorText = "Missing password";
 
-        UnsuccessfulRegisterResponseModel response = step("Make request", ()->
+        UnsuccessfulRegisterResponseModel response = step("Make request", () ->
                 given(defaultRequestSpec)
-                    .body(bodyData)
-                .when()
-                    .post("/register")
+                        .body(bodyData)
+                        .when()
+                        .post("/register")
 
-                .then()
-                    .spec(responseSpec400)
-                    .extract().as(UnsuccessfulRegisterResponseModel.class));
+                        .then()
+                        .spec(responseSpec400)
+                        .extract().as(UnsuccessfulRegisterResponseModel.class));
 
-        step("Check response", ()-> assertEquals(expectedErrorText, response.getError()));
+        step("Check response", () -> assertEquals(expectedErrorText, response.getError()));
     }
 }
