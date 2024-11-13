@@ -19,9 +19,8 @@ public class UsersTests extends TestBase {
     @DisplayName("Успешное создание пользователя")
     @Test
     void successfulCreateUserTest() {
-        CreateUpdateUserRequestModel bodyData = new CreateUpdateUserRequestModel();
-        bodyData.setName("Ronald McDonald");
-        bodyData.setJob("Entertainment Manager");
+        CreateUpdateUserRequestModel bodyData = new CreateUpdateUserRequestModel("Ronald McDonald",
+                "Entertainment Manager");
 
         CreateUpdateUserResponseModel response = step("Make request", () ->
                 given(defaultRequestSpec)
@@ -41,9 +40,8 @@ public class UsersTests extends TestBase {
     @DisplayName("Успешное обновление данных пользователя")
     @Test
     void successfulUpdateUserTest() {
-        CreateUpdateUserRequestModel bodyData = new CreateUpdateUserRequestModel();
-        bodyData.setName("Ronald McDonald");
-        bodyData.setJob("Chief Entertainment Manager");
+        CreateUpdateUserRequestModel bodyData = new CreateUpdateUserRequestModel("Ronald McDonald",
+                "Chief Entertainment Manager");
 
         CreateUpdateUserResponseModel response = step("Make request", () ->
                 given(defaultRequestSpec)

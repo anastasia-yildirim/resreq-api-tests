@@ -21,9 +21,7 @@ public class RegistrationTests extends TestBase {
     @DisplayName("Успешная регистрация")
     @Test
     void successfulRegisterTest() {
-        RegisterRequestModel bodyData = new RegisterRequestModel();
-        bodyData.setEmail("eve.holt@reqres.in");
-        bodyData.setPassword("pistol");
+        RegisterRequestModel bodyData = new RegisterRequestModel("eve.holt@reqres.in", "pistol");
 
         RegisterResponseModel response = step("Make request", ()->
                 given(defaultRequestSpec)
@@ -37,7 +35,6 @@ public class RegistrationTests extends TestBase {
         step("Check response", ()-> {
         assertNotEquals(null, response.getId());
         assertThat(response.getToken().length(), greaterThan(10));
-        assertThat(response.getToken(), is(notNullValue()));
         assertThat(response.getToken(), matchesPattern("^[a-zA-Z0-9]+$"));
         });
     }
@@ -45,9 +42,7 @@ public class RegistrationTests extends TestBase {
     @DisplayName("Неуспешная регистрация - невалидный пользователь")
     @Test
     void unsuccessfulRegisterUndefinedUserTest() {
-        RegisterRequestModel bodyData = new RegisterRequestModel();
-        bodyData.setEmail("lewis.carol@reqres.in");
-        bodyData.setPassword("alice");
+        RegisterRequestModel bodyData = new RegisterRequestModel("lewis.carol@reqres.in", "alice");
 
         String expectedErrorText = "Note: Only defined users succeed registration";
 
@@ -66,9 +61,7 @@ public class RegistrationTests extends TestBase {
     @DisplayName("Неуспешная регистрация - отсутствует пароль")
     @Test
     void unsuccessfulRegisterMissingPasswordTest() {
-        RegisterRequestModel bodyData = new RegisterRequestModel();
-        bodyData.setEmail("eveasdas.holt@reqres.in");
-        bodyData.setPassword(null);
+        RegisterRequestModel bodyData = new RegisterRequestModel("eveasdas.holt@reqres.in", null);
 
         String expectedErrorText = "Missing password";
 
